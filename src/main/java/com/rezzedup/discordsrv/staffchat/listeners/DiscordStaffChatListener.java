@@ -1,6 +1,7 @@
 package com.rezzedup.discordsrv.staffchat.listeners;
 
 import com.rezzedup.discordsrv.staffchat.StaffChatPlugin;
+import com.rezzedup.discordsrv.staffchat.abyssal.ProxyListener;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.DiscordGuildMessagePreProcessEvent;
 
@@ -18,9 +19,11 @@ public class DiscordStaffChatListener
             event.setCancelled(true); // Cancel this message from getting sent to global chat.
             
             // Handle this on the main thread next tick.
-            plugin.getServer().getScheduler().runTask(plugin, () ->
-                plugin.submitMessageFromDiscord(event.getAuthor(), event.getMessage())
-            );
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                plugin.submitMessageFromDiscord(event.getAuthor(), event.getMessage());
+                ProxyListener.get().sendPluginMessageFromDiscord(event.getAuthor(), event.getMessage());
+
+            });
         }
     }
 }

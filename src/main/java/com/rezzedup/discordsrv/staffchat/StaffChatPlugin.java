@@ -26,6 +26,8 @@ import static com.rezzedup.discordsrv.staffchat.util.Strings.colorful;
 public class StaffChatPlugin extends JavaPlugin implements StaffChatAPI
 {
     public static final String CHANNEL = "staff-chat";
+    public static final String PLUGIN_CHANNEL = "abyssal:proxy";
+    private static StaffChatPlugin plugin;
          
     private boolean isDiscordSrvHookEnabled = false;
     private Debugger debugger;
@@ -35,6 +37,7 @@ public class StaffChatPlugin extends JavaPlugin implements StaffChatAPI
     @Override
     public void onEnable()
     {
+        plugin = this;
         this.debugger = new Debugger(this);
         this.discordChatListener = new DiscordStaffChatListener(this);
         this.inGameToggles = new PlayerStaffChatToggleListener(this);
@@ -281,5 +284,9 @@ public class StaffChatPlugin extends JavaPlugin implements StaffChatAPI
             }
         }
         return true;
+    }
+
+    public static StaffChatPlugin getInstance() {
+        return plugin;
     }
 }
